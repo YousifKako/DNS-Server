@@ -15,7 +15,7 @@ impl PacketBuffer {
         return self.pos;
     }
 
-    fn get_range(&mut self, start: usize, len: usize) -> &[u8] {
+    pub fn get_range(&mut self, start: usize, len: usize) -> &[u8] {
         if start + len >= 512 {
             return &self.buff[start..start];
         }

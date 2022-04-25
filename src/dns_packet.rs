@@ -6,21 +6,21 @@ use crate::packet_buffer::PacketBuffer;
 
 pub struct DnsPacket
 {
-    pub header:            DnsHeader,
-    pub question_section:  Vec<DnsQuestion>,
-    pub answer_section:    Vec<DnsRecord>,
-    pub authority_section: Vec<DnsRecord>,
-    pub addition_section:  Vec<DnsRecord>,
+    pub header:             DnsHeader,
+    pub question_section:   Vec<DnsQuestion>,
+    pub answer_section:     Vec<DnsRecord>,
+    pub authority_section:  Vec<DnsRecord>,
+    pub additional_section: Vec<DnsRecord>,
 }
 
 impl DnsPacket {
     pub fn new() -> Self {
         Self {
-            header:            DnsHeader::new(),
-            question_section:  Vec::new(),
-            answer_section:    Vec::new(),
-            authority_section: Vec::new(),
-            addition_section:  Vec::new(),
+            header:             DnsHeader::new(),
+            question_section:   Vec::new(),
+            answer_section:     Vec::new(),
+            authority_section:  Vec::new(),
+            additional_section: Vec::new(),
         }
     }
 
@@ -45,14 +45,18 @@ impl DnsPacket {
         }
 
         for _ in 0..result.header.additional_count {
-            let addition = DnsRecord::read(buffer);
-            result.addition_section.push(addition);
+            let additional = DnsRecord::read(buffer);
+            result.additional_section.push(additional);
         }
 
         return result;
     }
 
     pub fn write_packet_to_buffer(&mut self, buffer: &mut PacketBuffer) {
+        self.header.question_count = self.question_section.len() as u16;
+        self.header.answer_count = self.answer_section.len() as u16;
+        self.header.authority_count = self.authority_section.len() as u16;
+        self.header.additional_count = self.additional_section.len() as u16;
         self.header.write(buffer);
 
         for question in &self.question_section {
@@ -67,8 +71,8 @@ impl DnsPacket {
             authority.write(buffer);
         }
 
-        for addition in &self.addition_section {
-            addition.write(buffer);
+        for additional in &self.additional_section {
+            additional.write(buffer);
         }
     }
 }

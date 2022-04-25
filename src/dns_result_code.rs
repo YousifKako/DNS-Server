@@ -1,11 +1,11 @@
 #[derive(Copy, Clone, Debug)]
 pub enum ResultCode {
-    NOERROR = 0,
-    FORMERR = 1,
+    NOERROR  = 0,
+    FORMERR  = 1,
     SERVFAIL = 2,
     NXDOMAIN = 3,
-    NOTIMP = 4,
-    REFUSED = 5,
+    NOTIMP   = 4,
+    REFUSED  = 5,
 }
 
 impl ResultCode {
