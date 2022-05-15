@@ -53,9 +53,9 @@ impl DnsPacket {
     }
 
     pub fn write_packet_to_buffer(&mut self, buffer: &mut PacketBuffer) {
-        self.header.question_count = self.question_section.len() as u16;
-        self.header.answer_count = self.answer_section.len() as u16;
-        self.header.authority_count = self.authority_section.len() as u16;
+        self.header.question_count   = self.question_section.len() as u16;
+        self.header.answer_count     = self.answer_section.len() as u16;
+        self.header.authority_count  = self.authority_section.len() as u16;
         self.header.additional_count = self.additional_section.len() as u16;
         self.header.write(buffer);
 

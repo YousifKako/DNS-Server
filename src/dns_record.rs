@@ -42,7 +42,7 @@ impl DnsRecord {
     pub fn read(buffer: &mut PacketBuffer) -> Self {
         let domain = buffer.get_qname();
         let qtype  = buffer.read_u16();
-        let _      = buffer.read_u16(); // Class is ways 1, discard this data
+        let _      = buffer.read_u16(); // Class is always 1, discard this data
         let ttl    = buffer.read_u32();
         let len    = buffer.read_u16();
 
