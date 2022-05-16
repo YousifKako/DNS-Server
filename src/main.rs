@@ -73,9 +73,9 @@ fn handle_query(named_root_addr: &str, socket: &UdpSocket) {
 }
 
 fn recursive_resolver(named_root_addr: &str, qname: &str, qtype: QueryType) -> Result<DnsPacket, ()> {
-    let mut recursive_addr = named_root_addr.to_string();
+    let mut recursive_addr    = named_root_addr.to_string();
 
-    loop {
+    for _ in 1..=100 { // Recursion Limit
         println!("attempting lookup of {:?} {} with ns {}", qtype, qname, recursive_addr);
 
         let server: (&str, u16) = (&recursive_addr, 53);
@@ -95,6 +95,8 @@ fn recursive_resolver(named_root_addr: &str, qname: &str, qtype: QueryType) -> R
             }
         }
     }
+
+    return Err(());
 }
 
 fn lookup(server: (&str, u16), qname: &str, qtype: QueryType) -> Result<DnsPacket, ()> {
